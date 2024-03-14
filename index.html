@@ -14,12 +14,138 @@
                 height: 100%;
                 background-color: rgba(0, 0, 0, 0.2);
             }
+
+            body {
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .animation {
+                transition: opacity 2s ease-out;
+            }
+
+            #img-gif {
+                padding-bottom: 1rem;
+            }
+
+            .progress-7 {
+                width: 400px;
+                height: 24px;
+                -webkit-mask: radial-gradient(
+                            circle closest-side,
+                            #000 94%,
+                            #0000
+                        )
+                        0 0/10% 100%,
+                    linear-gradient(#000 0 0) center/calc(100% - 12px)
+                        calc(100% - 12px) no-repeat;
+                background: linear-gradient(#25b09b 0 0) 0/0% no-repeat #ddd;
+                animation: p7 7s infinite linear;
+            }
+            @keyframes p7 {
+                100% {
+                    background-size: 100%;
+                }
+            }
+
+            .button-53 {
+                background-color: #3dd1e7;
+                border: 0 solid #e5e7eb;
+                box-sizing: border-box;
+                color: #000000;
+                display: flex;
+                font-family: ui-sans-serif, system-ui, -apple-system, system-ui,
+                    "Segoe
+        UI", Roboto, "Helvetica Neue", Arial,
+                    "Noto Sans", sans-serif, "Apple Color
+        Emoji",
+                    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                font-size: 1rem;
+                font-weight: 700;
+                justify-content: center;
+                line-height: 1.75rem;
+                padding: 0.75rem 1.65rem;
+                position: relative;
+                text-align: center;
+                text-decoration: none #000000 solid;
+                text-decoration-thickness: auto;
+                width: 100%;
+                max-width: 460px;
+                position: relative;
+                cursor: pointer;
+                transform: rotate(-2deg);
+                user-select: none;
+                -webkit-user-select: none;
+                touch-action: manipulation;
+            }
+            .button-53:focus {
+                outline: 0;
+            }
+
+            .theme {
+                background-color: rgba(0, 0, 0, 1);
+            }
+
+            .button-53:after {
+                content: "";
+                position: absolute;
+                border: 1px solid #000000;
+                bottom: 4px;
+                left: 4px;
+                width: calc(100% - 1px);
+                height: calc(100% - 1px);
+            }
+            .button-53:hover:after {
+                bottom: 2px;
+                left: 2px;
+            }
+            @media (min-width: 768px) {
+                .button-53 {
+                    padding: 0.75rem 3rem;
+                    font-size: 1.25rem;
+                }
+            }
         </style>
     </head>
     <body>
-        <canvas id="heart"></canvas>
+        <canvas id="heart" style="display: none"></canvas>
+        <div id="note"></div>
 
+        <img id="img-gif" src="./325706b04745389d98ce8b8149764e94.gif" />
+        <div class="progress-7"></div>
+        <button
+            class="button-53"
+            role="button"
+            id="btn"
+            style="display: none"
+            onclick="ready()"
+        >
+            R u ready?
+        </button>
         <script>
+            const showNote = (note) => {
+                var notes = document.getElementById("note");
+                var text = document.createElement("p");
+                text.innerHTML = note;
+                text.style.opacity = 0;
+                text.style.fontWeight = "bold";
+                text.style.color = "white";
+                text.classList.add("animation");
+                text.style.fontSize = "26px";
+                notes.appendChild(text);
+                text.style.opacity = 1;
+                setTimeout(() => {
+                    text.style.opacity = 0;
+                    setTimeout(() => {
+                        notes.removeChild(text);
+                    }, 2000);
+                }, 2000);
+            };
+
             window.requestAnimationFrame =
                 window.__requestAnimationFrame ||
                 window.requestAnimationFrame ||
@@ -57,6 +183,7 @@
                 var mobile = window.isDevice;
                 var koef = mobile ? 0.5 : 1;
                 var canvas = document.getElementById("heart");
+                canvas.style.display = "";
                 var ctx = canvas.getContext("2d");
                 var width = (canvas.width = koef * innerWidth);
                 var height = (canvas.height = koef * innerHeight);
@@ -199,10 +326,52 @@
                 loop();
             };
 
+            function start() {
+                setTimeout(() => {
+                    document.body.removeChild(
+                        document.getElementsByClassName("progress-7")[0]
+                    );
+                    document.getElementById("btn").style.display = "";
+                }, 7000);
+            }
+
+            async function ready() {
+                document.body.removeChild(document.getElementById("img-gif"));
+                document.body.removeChild(document.getElementById("btn"));
+                document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
+                showNote("Anh bé chào em bé ạ!");
+                setTimeout(() => {
+                    showNote(
+                        "Nay là 14/3, thật may mắn khi anh gặp được em bé!"
+                    );
+                    setTimeout(() => {
+                        showNote("Amen!, cảm ơn chúa =))).");
+                        setTimeout(() => {
+                            showNote(
+                                "Cảm ơn em bé đồng ý làm người yêu anh ~~"
+                            );
+                            setTimeout(() => {
+                                showNote(
+                                    "Anh mong là em bé sẽ đồng hành cùng anh trong đoạn đường tương lai ^^"
+                                );
+                                setTimeout(() => {
+                                    showNote(
+                                        "Sau đây anh có 1 trái tim to chà bá tặng cho em bé!"
+                                    );
+                                    setTimeout(() => {
+                                        init();
+                                    }, 4000);
+                                }, 4000);
+                            }, 4000);
+                        }, 4000);
+                    }, 4000);
+                }, 4000);
+            }
+
             var s = document.readyState;
             if (s === "complete" || s === "loaded" || s === "interactive")
-                init();
-            else document.addEventListener("DOMContentLoaded", init, false);
+                start();
+            else document.addEventListener("DOMContentLoaded", start, false);
         </script>
     </body>
 </html>
